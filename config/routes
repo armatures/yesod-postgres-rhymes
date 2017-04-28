@@ -6,6 +6,8 @@
 
 / HomeR GET POST
 
+/pronounce/#Text PronounceR GET
+
 /comments CommentR POST
 
 /profile ProfileR GET
