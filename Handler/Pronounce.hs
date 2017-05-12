@@ -4,6 +4,6 @@ import Import
 getPronounceR :: Text -> Handler Html
 getPronounceR spelling =
     defaultLayout $ do
-        setTitle $ toHtml spelling
+        setTitle $ toHtml ("pronounce " ++ spelling)
         $(widgetFile "pronounce")
 
