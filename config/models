@@ -1,3 +1,15 @@
+PhonemeType
+    type Text
+    UniquePhonemeType type
+Phoneme
+    spelling Text
+    phonemeType PhonemeTypeId
+    UniquePhonemeSpelling spelling
+Pronounciation
+    spelling Text
+    phonemes [Phoneme]
+    syllables Int
+    rank Int Maybe
 User
     ident Text
     password Text Maybe
