@@ -123,6 +123,18 @@ executable         rhymebook
                 RecordWildCards
                 CPP
 
+executable     seed
+    if flag(library-only)
+        Buildable: False
+
+    main-is:           Seed.hs
+    hs-source-dirs:    seed
+    build-depends:     base
+                     , rhymebook
+                     , monad-logger
+                     , persistent
+                     , persistent-postgresql
+
 test-suite test
     type:              exitcode-stdio-1.0
     main-is:           Spec.hs
