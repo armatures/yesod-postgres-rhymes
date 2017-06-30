@@ -9,4 +9,4 @@ create database "rhymebook_LOWER";
 
 seed the database initially by running `stack run seed`
 
-then running `stack exec yesod devel` should start the server.
+then running `stack exec yesod devel` will start the server.

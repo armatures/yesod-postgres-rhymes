@@ -1,0 +1,13 @@
+here's a list of problems that I've had while trying to move a parser I wrote into my project as a simple seed file to seed the database:
+- can't load any functions in a repl so I can't see the types of packages (how do I effectively :l Control.Monad?
+- can't figure out where packages I use get loaded from so I can't very well add new packages (yesod how does scope work here I don't see any imports in a lot of these files)
+- the recommendations I found for how to add a new executable in a cabal file seem to make importing the dependencies of that executable very difficult (can't figure out how to please the linker cause I'm unsure where to put this dependency on WordFile)
+  - Warning: The following modules should be added to exposed-modules or other-modules in /Users/charliebevis/workspace/haskell/rhymebook/rhymebook.cabal:
+      - In seed component:
+          WordFile
+- I'm having trouble comprehending the types of persistent's postgres insert: parsing a file using my Parsec parser is giving me :: IO (Either ParseError [Pronunciation]) and I'm looking to access that [Pronunciation] to insert in a table with :: ReaderT SqlBackend (LoggingT IO). I think to do this I need to lift my sql insert stuff into the IO monad somehow?
+
+  Brady says:
+    make a stack executable script (similar to usr/bin/ whatever pragma or hashbang except you can specify stack
+    also you could have your parser in a different library (I'll make one with stack new)
+    run them in main and you can fmap your pure function into IO where you're reading your file

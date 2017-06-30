@@ -1,13 +1,6 @@
-PhonemeType
-    type Text
-    UniquePhonemeType type
-Phoneme
+Pronunciation
     spelling Text
-    phonemeType PhonemeTypeId
-    UniquePhonemeSpelling spelling
-Pronounciation
-    spelling Text
-    phonemes [PhonemeId]
+    phonemes [Phoneme]
     rank Int Maybe
 User
     ident Text
