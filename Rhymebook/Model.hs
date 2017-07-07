@@ -1,12 +1,9 @@
 {-# LANGUAGE FlexibleInstances #-}
 
-module Model where
+module Rhymebook.Model where --(Emphasis, Phoneme, Pronunciation)  where
 
 import ClassyPrelude.Yesod
 import Database.Persist.Quasi
--- import Control.Monad.Identity
-import Text.Parsec
--- import Text.ParserCombinators.Parsec hiding (Parser)
 
 data Emphasis = Emp2 | Emp1 | Emp0 | EmpNone
     deriving (Eq, Read, Show)
@@ -19,8 +16,6 @@ data Phoneme = AA Emphasis | AE Emphasis | AH Emphasis | AO Emphasis |
     UH Emphasis | UW Emphasis | V | W | Y | Z | ZH
     deriving (Show, Read, Eq)
 derivePersistField "Phoneme"
-
-type Parser a = ParsecT String () Identity a
 
 -- You can define all of your database entities in the entities file.
 -- You can find more information on persistent and how to declare entities

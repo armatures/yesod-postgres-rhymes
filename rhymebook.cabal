@@ -17,7 +17,7 @@ library
                      Foundation
                      Import
                      Import.NoFoundation
-                     Model
+                     Rhymebook.Model
                      Settings
                      Settings.StaticFiles
                      Handler.Common
@@ -93,9 +93,6 @@ library
                  , time
                  , case-insensitive
                  , wai
-                 , parsec
-                 , mtl
-                 , text
 
 executable         rhymebook
     if flag(library-only)
@@ -124,20 +121,6 @@ executable         rhymebook
                 TupleSections
                 RecordWildCards
                 CPP
-
-executable     seed
-    if flag(library-only)
-        Buildable: False
-
-    main-is:           Seed.hs
-    hs-source-dirs:    seed
-    build-depends:     base
-                     , rhymebook
-                     , monad-logger
-                     , persistent
-                     , persistent-postgresql
-                     , parsec
-                     , text
 
 test-suite test
     type:              exitcode-stdio-1.0
@@ -184,5 +167,3 @@ test-suite test
                  , classy-prelude
                  , classy-prelude-yesod
                  , aeson
-                 , parsec
-                 , text
