@@ -2,6 +2,7 @@ Pronunciation
     spelling Text
     phonemes [Phoneme]
     rank Int Maybe
+    deriving Show
 User
     ident Text
     password Text Maybe
