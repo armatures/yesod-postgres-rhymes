@@ -3,6 +3,7 @@ Pronunciation
     phonemes [Phoneme]
     rank Int Maybe
     deriving Show
+    deriving Eq
 User
     ident Text
     password Text Maybe
