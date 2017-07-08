@@ -1,5 +1,6 @@
 module WordFile
     ( dictionaryParser
+      , wordLine
     ) where
 
 import Text.Parsec (ParseError, try)
@@ -128,7 +129,3 @@ phonemeParser =
          <|> try ( string "Z" >> return Z )
 
 
--- parseWithEof wordLine "yow CHOW"
--- wordLine "yow CHOW # comment"
--- quickCheck prop_lower_then_upper
--- parseWithEof ( sepBy1 (many1 $ satisfy (\_ -> True)) (string "  ")) $ "a t  e"
