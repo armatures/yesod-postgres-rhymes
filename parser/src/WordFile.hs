@@ -2,18 +2,15 @@ module WordFile
     ( dictionaryParser
     ) where
 
-import Text.Parsec (ParseError, try, ParsecT)
-import Text.Parsec (parse, eof)
-import Text.Parsec.Char (oneOf, noneOf, char, digit, satisfy, string, lower, upper)
+import Text.Parsec (ParseError, try)
+import Text.Parsec.Char (noneOf, char, digit, satisfy, string, lower, upper)
 import Text.Parsec.Combinator (many1, choice, chainl1, sepBy1)
 import Control.Applicative ((<|>), many)
 import Control.Monad
-import Control.Monad.Identity
 import Data.Char (isLetter, isDigit)
 import Rhymebook.Model (Phoneme(..), Emphasis(..), Pronunciation(..))
+import CommonParsers (whitespace, lexeme, Parser)
 import qualified Data.Text as T
-
-type Parser a = ParsecT String () Identity a
 
 dictionaryParser :: Parser [ Pronunciation ]
 dictionaryParser = many1 wordLine
@@ -130,14 +127,6 @@ phonemeParser =
          <|> try ( string "ZH" >> return ZH )
          <|> try ( string "Z" >> return Z )
 
-lexeme :: Parser a -> Parser a
-lexeme p = do
-           x <- p
-           whitespace
-           return x
-
-whitespace :: Parser ()
-whitespace = void $ many $ oneOf " \n\t"
 
 -- parseWithEof wordLine "yow CHOW"
 -- wordLine "yow CHOW # comment"
