@@ -6,6 +6,8 @@ import Control.Applicative ((<*))
 import CommonParsers (Parser)
 import Data.Text as T hiding (tail, head)
 import RankingFile
+import Data.Map as Map
+
 main :: IO ()
 main = do
   runTestTT $ TestList [ testWordFileParser, testRankingParser]
@@ -39,11 +41,11 @@ testRankingParser = TestLabel "RankingFile tests" $ TestList [
           Right $ "yow"
       , TestCase $
         assertEqual "the lone line gets a rank of 1"
-        ( head <$> parseWithEof rankingParser "yow 42" ) $
-          Right $ ("yow", 1)
+        ( ( flip (!) "yow" ) <$> parseWithEof rankingParser "yow 42" ) $
+          Right $ 1
       , TestCase $
         assertEqual "the second line gets a rank of 2"
-        ( snd . head . tail <$> (parseWithEof rankingParser "yow 42\nwow 42" ) ) $
+        ( ( flip (!) "second" ) <$> (parseWithEof rankingParser "yow 42\nsecond 42" ) ) $
           Right $ 2
     ]
 

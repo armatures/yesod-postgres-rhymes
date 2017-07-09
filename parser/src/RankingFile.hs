@@ -9,9 +9,11 @@ import Control.Monad
 import Data.Char (isLetter, isDigit)
 import Rhymebook.Model (Phoneme(..), Emphasis(..), Pronunciation(..))
 import CommonParsers (whitespace, lexeme, Parser)
+import Data.Map as Map
 
-rankingParser :: Parser [ (String, Integer) ]
-rankingParser = (flip zip [1..]) <$> (many1 rankingLine)
+rankingParser :: Parser (Map String Integer)
+rankingParser = Map.fromList <$> associationList
+                 where associationList = (flip zip [1..]) <$> (many1 rankingLine)
 
 rankingLine :: Parser String
 rankingLine = do
