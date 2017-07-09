@@ -24,10 +24,10 @@ seed = do
 
 dictionaryPath = "/Users/charliebevis/workspace/cmudict/cmudict.dict"
 
-parseDict :: IO (Either ParseError [Pronunciation])
+parseDict :: IO (Either ParseError [UnrankedPronunciation])
 parseDict = parseFromFile dictionaryParser dictionaryPath
 
-insertWords :: [Pronunciation] -> IO ()
+insertWords :: [ UnrankedPronunciation ] -> IO ()
 insertWords dict = do
   settings <- loadYamlSettingsArgs [configSettingsYmlValue] useEnv
   let conn = (pgConnStr $ appDatabaseConf settings)
@@ -35,6 +35,6 @@ insertWords dict = do
     runMigration migrateAll
 
     deleteWhere ([] :: [Filter Pronunciation])
-    mapM (\w -> insert_ w) dict
+    mapM (\w -> insert_ $ Pronunciation (T.pack $ fst w) (snd w) Nothing) dict
     putStrLn $ T.pack $ "inserted " ++ show ( Import.length dict) ++ " words into the dictionary"
     return ()

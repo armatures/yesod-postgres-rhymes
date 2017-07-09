@@ -1,6 +1,7 @@
 module WordFile
     ( dictionaryParser
       , wordLine
+      , UnrankedPronunciation
     ) where
 
 import Text.Parsec (ParseError, try)
@@ -13,26 +14,28 @@ import Rhymebook.Model (Phoneme(..), Emphasis(..), Pronunciation(..))
 import CommonParsers (whitespace, lexeme, Parser)
 import qualified Data.Text as T
 
-dictionaryParser :: Parser [ Pronunciation ]
+type UnrankedPronunciation = (String, [Phoneme])
+
+dictionaryParser :: Parser [ UnrankedPronunciation ]
 dictionaryParser = many1 wordLine
 
-wordLine :: Parser Pronunciation
+wordLine :: Parser UnrankedPronunciation
 wordLine =
     try withComment <|> wordParser
 
-withComment :: Parser Pronunciation
+withComment :: Parser UnrankedPronunciation
 withComment = do
     w <- lexeme $ wordParser
     void $ lexeme $ char '#'
     void $ lexeme $ many $ noneOf "\n"
     return $ w
 
-wordParser :: Parser Pronunciation
+wordParser :: Parser UnrankedPronunciation
 wordParser = do
     spelling <- spellingParser
     string " "
     pronounciation <- pronounciationParser
-    return (Pronunciation ( T.pack spelling ) pronounciation Nothing)
+    return (spelling, pronounciation)
 
 spellingParser =
     many1 $ noneOf "ABCDEFGHIJKLMNOPQRSTUVWXYZ "

@@ -47,9 +47,9 @@ testRankingParser = TestLabel "RankingFile tests" $ TestList [
           Right $ 2
     ]
 
-makePronunciation :: String -> [Phoneme] -> Pronunciation
+makePronunciation :: String -> [Phoneme] -> (String, [Phoneme])
 makePronunciation spelling phonemes =
-  Pronunciation (T.pack spelling) phonemes Nothing
+  (spelling, phonemes)
 
 parseWithEof :: Parser a -> String -> Either ParseError a
 parseWithEof p = parse (p <* eof) ""
