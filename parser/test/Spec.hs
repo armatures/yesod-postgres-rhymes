@@ -5,14 +5,14 @@ import Text.Parsec (ParseError, eof, parse)
 import Control.Applicative ((<*))
 import CommonParsers (Parser)
 import Data.Text as T hiding (tail, head)
-import Lib
+import Seed
 import RankingFile
 import InsertWords
 import Data.Map as Map
 
 main :: IO ()
 main = do
-  runTestTT $ TestList [ testWordFileParser, testRankingParser, testLib]
+  runTestTT $ TestList [ testWordFileParser, testRankingParser, testSeed]
   return ()
 
 testWordFileParser :: Test
@@ -51,8 +51,8 @@ testRankingParser = TestLabel "RankingFile tests" $ TestList [
           Right $ 2
     ]
 
-testLib :: Test
-testLib = TestLabel "Lib tests" $ TestList [
+testSeed :: Test
+testSeed = TestLabel "Seed tests" $ TestList [
       TestCase $
         assertEqual "empty map gives ranking of Nothing"
           ( rankPronunciation ("spellingY", [Y]) ( Map.fromList [] ) ) $

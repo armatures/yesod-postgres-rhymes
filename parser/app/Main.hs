@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import Seed
 
 main :: IO ()
 main = seed

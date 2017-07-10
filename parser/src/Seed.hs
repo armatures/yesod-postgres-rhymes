@@ -1,5 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude, OverloadedStrings #-}
-module Lib ( seed )
+module Seed ( seed )
     where
 import Import
 import Rhymebook.Model
