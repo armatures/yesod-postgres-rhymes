@@ -5,12 +5,13 @@ import Text.Parsec (ParseError, eof, parse)
 import Control.Applicative ((<*))
 import CommonParsers (Parser)
 import Data.Text as T hiding (tail, head)
+import Lib
 import RankingFile
 import Data.Map as Map
 
 main :: IO ()
 main = do
-  runTestTT $ TestList [ testWordFileParser, testRankingParser]
+  runTestTT $ TestList [ testWordFileParser, testRankingParser, testLib]
   return ()
 
 testWordFileParser :: Test
@@ -48,6 +49,18 @@ testRankingParser = TestLabel "RankingFile tests" $ TestList [
         ( ( flip (!) "second" ) <$> (parseWithEof rankingParser "yow 42\nsecond 42" ) ) $
           Right $ 2
     ]
+
+testLib :: Test
+testLib = TestLabel "Lib tests" $ TestList [
+      TestCase $
+        assertEqual "empty map gives ranking of Nothing"
+          ( rankPronunciation ("spellingY", [Y]) ( Map.fromList [] ) ) $
+            ( Pronunciation ( T.pack "spellingY" ) [Y] Nothing )
+      , TestCase $
+        assertEqual "map with key present gives real ranking"
+          ( rankPronunciation ("spellingY", [Y]) ( Map.fromList [("spellingY",21)] ) ) $
+            ( Pronunciation ( T.pack "spellingY" ) [Y] ( Just 21 ) )
+                                           ]
 
 makePronunciation :: String -> [Phoneme] -> (String, [Phoneme])
 makePronunciation spelling phonemes =

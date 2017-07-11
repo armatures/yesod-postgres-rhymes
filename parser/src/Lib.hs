@@ -1,6 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude, OverloadedStrings #-}
-module Lib (seed)
-  where
+module Lib ( seed
+  , rankPronunciation)
+    where
 import Import
 import Rhymebook.Model
 import Control.Monad.Logger
@@ -13,15 +14,21 @@ import WordFile
 import RankingFile (rankingParser)
 import Control.Monad.IO.Class (liftIO)
 import Data.Text as T
+import Data.Map as Map
 
 seed :: IO ()
 seed = do
-  rankings <- parseRankings
-  dictionary <- parseDict
+  eRankings <- parseRankings
+  eDictionary <- parseDict
+
   either
-         (printParseFailure dictionaryPath)
-         ( \proList -> insertWords proList )
-         dictionary
+    ( printParseFailure rankingPath )
+    ( \rankingsMap ->
+    either
+      ( printParseFailure dictionaryPath )
+      ( \dictionary -> insertWords dictionary rankingsMap )
+      eDictionary
+    ) eRankings
 
 dictionaryPath = "/Users/charliebevis/workspace/cmudict/cmudict.dict"
 rankingPath = "/Users/charliebevis/workspace/cmudict/word_frequency.txt"
@@ -34,17 +41,24 @@ printParseFailure dictionaryPath _ =
 parseDict :: IO (Either ParseError [UnrankedPronunciation])
 parseDict = parseFromFile dictionaryParser dictionaryPath
 
-parseRankings :: IO (Either ParseError (Map String Integer))
+parseRankings :: IO (Either ParseError (Map String Int))
 parseRankings = parseFromFile rankingParser rankingPath
 
-insertWords :: [ UnrankedPronunciation ] -> IO ()
-insertWords dict = do
+insertWords :: [ UnrankedPronunciation ] -> Map String Int -> IO ()
+insertWords dict rankMap = do
   settings <- loadYamlSettingsArgs [configSettingsYmlValue] useEnv
   let conn = (pgConnStr $ appDatabaseConf settings)
   runStderrLoggingT . withPostgresqlConn conn $ runSqlConn $ do
     runMigration migrateAll
 
     deleteWhere ([] :: [Filter Pronunciation])
-    mapM (\w -> insert_ $ Pronunciation (T.pack $ fst w) (snd w) Nothing) dict
+    mapM (\w -> insert_ $ rankPronunciation w rankMap) dict
     putStrLn $ T.pack $ "inserted " ++ show ( Import.length dict) ++ " words into the dictionary"
     return ()
+
+rankPronunciation :: UnrankedPronunciation -> Map String Int -> Pronunciation
+rankPronunciation w rankMap = Pronunciation (T.pack spelling) (phonemes) (ranking)
+  where
+    spelling = fst w
+    phonemes = snd w
+    ranking = Map.lookup spelling rankMap

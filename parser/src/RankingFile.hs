@@ -11,9 +11,9 @@ import Rhymebook.Model (Phoneme(..), Emphasis(..), Pronunciation(..))
 import CommonParsers (whitespace, lexeme, Parser)
 import Data.Map as Map
 
-rankingParser :: Parser (Map String Integer)
+rankingParser :: Parser (Map String Int)
 rankingParser = Map.fromList <$> associationList
-                 where associationList = (flip zip [1..]) <$> (many1 rankingLine)
+                 where associationList = (flip zip [(1::Int)..]) <$> (many1 rankingLine)
 
 rankingLine :: Parser String
 rankingLine = do
