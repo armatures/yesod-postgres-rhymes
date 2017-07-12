@@ -19,6 +19,7 @@ library
                      , WordFile
                      , CommonParsers
                      , RankingFile
+                     , InsertWords
   build-depends:       base >= 4.7 && < 5
                      , text
                      , mtl

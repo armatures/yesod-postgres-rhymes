@@ -7,6 +7,7 @@ import CommonParsers (Parser)
 import Data.Text as T hiding (tail, head)
 import Lib
 import RankingFile
+import InsertWords
 import Data.Map as Map
 
 main :: IO ()
