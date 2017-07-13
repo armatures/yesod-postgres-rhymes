@@ -22,6 +22,10 @@ testWordFileParser = TestLabel "WordFile tests" $ TestList [
         ( parseWithEof wordLine "yow Y OW" ) $
           Right $ makePronunciation "yow" [Y, OW EmpNone]
       , TestCase $
+        assertEqual "spellings ignore (2) suffix"
+        ( parseWithEof wordLine "yow(2) Y OW" ) $
+          Right $ makePronunciation "yow" [Y, OW EmpNone]
+      , TestCase $
         assertEqual "blank comment"
         ( parseWithEof wordLine "yow Y OW1 #" ) $
           Right $ makePronunciation "yow" [Y, OW Emp1]
