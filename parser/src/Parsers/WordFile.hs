@@ -38,15 +38,7 @@ wordParser = do
     return (spelling, pronounciation)
 
 spellingParser =
-    try secondary <|> primary
-        where
-            primary = many1 $ noneOf "ABCDEFGHIJKLMNOPQRSTUVWXYZ ("
-            secondary = do
-                 spelling <- primary
-                 void $ char '('
-                 void $ digit
-                 void $ char ')'
-                 return spelling
+    many1 $ noneOf "ABCDEFGHIJKLMNOPQRSTUVWXYZ ("
 
 pronounciationParser :: Parser [Phoneme]
 pronounciationParser =
