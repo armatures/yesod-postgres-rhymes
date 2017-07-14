@@ -14,8 +14,8 @@ import InsertWords (insertWords)
 
 seed :: IO ()
 seed = do
-  eRankings <- parseRankings
-  eDictionary <- parseDict
+  eRankings <- parseFromFile rankingParser rankingPath
+  eDictionary <- parseFromFile dictionaryParser dictionaryPath
 
   either
     ( printParseFailure rankingPath )
@@ -33,10 +33,4 @@ printParseFailure :: String -> ParseError -> IO ()
 printParseFailure dictionaryPath _ =
          putStrLn $ T.pack $
            "failed to parse the dictionary at " ++ dictionaryPath
-
-parseDict :: IO (Either ParseError [UnrankedPronunciation])
-parseDict = parseFromFile dictionaryParser dictionaryPath
-
-parseRankings :: IO (Either ParseError (Map String Int))
-parseRankings = parseFromFile rankingParser rankingPath
 
