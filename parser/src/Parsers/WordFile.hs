@@ -1,4 +1,4 @@
-module WordFile
+module Parsers.WordFile
     ( dictionaryParser
       , wordLine
       , UnrankedPronunciation
@@ -11,7 +11,7 @@ import Control.Applicative ((<|>), many)
 import Control.Monad
 import Data.Char (isLetter, isDigit)
 import Rhymebook.Model (Phoneme(..), Emphasis(..), Pronunciation(..))
-import CommonParsers (whitespace, lexeme, Parser)
+import Parsers.CommonParsers (whitespace, lexeme, Parser)
 import qualified Data.Text as T
 
 type UnrankedPronunciation = (String, [Phoneme])

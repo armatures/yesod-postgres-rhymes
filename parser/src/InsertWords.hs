@@ -5,7 +5,7 @@ import Import
 import Rhymebook.Model
 import Control.Monad.Logger
 import Database.Persist.Postgresql (pgConnStr, withPostgresqlConn, runSqlConn, rawExecute)
-import WordFile (UnrankedPronunciation)
+import Parsers.WordFile (UnrankedPronunciation)
 import System.Environment
 import Data.Text as T hiding (length)
 import Data.Map as Map

@@ -8,8 +8,8 @@ import Text.Parsec.String (parseFromFile)
 import Control.Monad
 import Data.Text as T
 import Data.Map as Map
-import WordFile
-import RankingFile (rankingParser)
+import Parsers.WordFile
+import Parsers.RankingFile (rankingParser)
 import InsertWords (insertWords)
 
 seed :: IO ()

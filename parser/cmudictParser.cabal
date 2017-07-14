@@ -16,9 +16,9 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Seed
-                     , WordFile
-                     , CommonParsers
-                     , RankingFile
+                     , Parsers.WordFile
+                     , Parsers.CommonParsers
+                     , Parsers.RankingFile
                      , InsertWords
   build-depends:       base >= 4.7 && < 5
                      , text

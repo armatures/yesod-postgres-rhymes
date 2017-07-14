@@ -1,12 +1,12 @@
 import Test.HUnit
-import WordFile (wordLine)
 import Rhymebook.Model (Phoneme(..), Emphasis(..), Pronunciation(..))
 import Text.Parsec (ParseError, eof, parse)
 import Control.Applicative ((<*))
-import CommonParsers (Parser)
 import Data.Text as T hiding (tail, head)
 import Seed
-import RankingFile
+import Parsers.CommonParsers (Parser)
+import Parsers.WordFile (wordLine)
+import Parsers.RankingFile
 import InsertWords
 import Data.Map as Map
 

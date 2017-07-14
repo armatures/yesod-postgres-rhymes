@@ -1,4 +1,4 @@
-module CommonParsers where
+module Parsers.CommonParsers where
 
 import Text.Parsec (ParsecT, many, oneOf)
 import Control.Monad.Identity

@@ -1,4 +1,4 @@
-module RankingFile
+module Parsers.RankingFile
            where
 
 import Text.Parsec (ParseError, try)
@@ -8,7 +8,7 @@ import Control.Applicative ((<|>), many)
 import Control.Monad
 import Data.Char (isLetter, isDigit)
 import Rhymebook.Model (Phoneme(..), Emphasis(..), Pronunciation(..))
-import CommonParsers (whitespace, lexeme, Parser)
+import Parsers.CommonParsers (whitespace, lexeme, Parser)
 import Data.Map as Map
 
 rankingParser :: Parser (Map String Int)
