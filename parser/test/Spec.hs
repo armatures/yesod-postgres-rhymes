@@ -19,52 +19,56 @@ testWordFileParser :: Test
 testWordFileParser = TestLabel "WordFile tests" $ TestList [
       TestCase $
         assertEqual "basic spelling and pronunciation"
-        ( parseWithEof wordLine "yow Y OW" ) $
-          Right $ makePronunciation "yow" [Y, OW EmpNone]
+        (Right $ makePronunciation "yow" [Y, OW EmpNone]) $
+          parseWithEof wordLine "yow Y OW"
       , TestCase $
         assertEqual "spellings ignore (2) suffix"
-        ( parseWithEof wordLine "yow(2) Y OW" ) $
-          Right $ makePronunciation "yow" [Y, OW EmpNone]
+        ( Right $ makePronunciation "yow" [Y, OW EmpNone] ) $
+          parseWithEof wordLine "yow(2) Y OW"
+      , TestCase $
+        assertEqual "spellings with special character at start"
+        ( Right $ makePronunciation "'bout" [B, AW Emp1, T] ) $
+          parseWithEof wordLine "'bout B AW1 T"
       , TestCase $
         assertEqual "blank comment"
-        ( parseWithEof wordLine "yow Y OW1 #" ) $
-          Right $ makePronunciation "yow" [Y, OW Emp1]
+        ( Right $ makePronunciation "yow" [Y, OW Emp1] ) $
+          parseWithEof wordLine "yow Y OW1 #"
       , TestCase $
         assertEqual "dash in spelling, comment"
-        ( parseWithEof wordLine "yew-chow Y UW2 CH OW1 # dash in spelling") $
-          Right $ makePronunciation "yew-chow" [Y, UW Emp2, CH, OW Emp1]
+        ( Right $ makePronunciation "yew-chow" [Y, UW Emp2, CH, OW Emp1] ) $
+          parseWithEof wordLine "yew-chow Y UW2 CH OW1 # dash in spellin"
       , TestCase $
         assertEqual "weird comment"
-        ( parseWithEof wordLine "yow Y OW # comment'with_weird\" characters" ) $
-          Right $ makePronunciation "yow" [Y, OW EmpNone]
+        ( Right $ makePronunciation "yow" [Y, OW EmpNone] ) $
+          parseWithEof wordLine "yow Y OW # comment'with_eird\" characters"
     ]
 
 testRankingParser :: Test
 testRankingParser = TestLabel "RankingFile tests" $ TestList [
       TestCase $
         assertEqual "one word's spelling"
-        ( parseWithEof rankingLine "yow 42" ) $
-          Right $ "yow"
+        ( Right $ "yow" ) $
+          parseWithEof rankingLine "yow 42"
       , TestCase $
         assertEqual "the lone line gets a rank of 1"
-        ( ( flip (!) "yow" ) <$> parseWithEof rankingParser "yow 42" ) $
-          Right $ 1
+        (Right 1) $
+          ( flip (!) "yow" ) <$> parseWithEof rankingParser "yow 42"
       , TestCase $
         assertEqual "the second line gets a rank of 2"
-        ( ( flip (!) "second" ) <$> (parseWithEof rankingParser "yow 42\nsecond 42" ) ) $
-          Right $ 2
+        (Right 2) $
+           ( flip (!) "second" ) <$> (parseWithEof rankingParser "yow 42\nsecond 42" )
     ]
 
 testSeed :: Test
 testSeed = TestLabel "Seed tests" $ TestList [
       TestCase $
         assertEqual "empty map gives ranking of Nothing"
-          ( rankPronunciation ("spellingY", [Y]) ( Map.fromList [] ) ) $
-            ( Pronunciation ( T.pack "spellingY" ) [Y] Nothing )
+          ( Pronunciation ( T.pack "spellingY" ) [Y] Nothing ) $
+             rankPronunciation ("spellingY", [Y]) ( Map.fromList [] )
       , TestCase $
         assertEqual "map with key present gives real ranking"
-          ( rankPronunciation ("spellingY", [Y]) ( Map.fromList [("spellingY",21)] ) ) $
-            ( Pronunciation ( T.pack "spellingY" ) [Y] ( Just 21 ) )
+         ( Pronunciation ( T.pack "spellingY" ) [Y] ( Just 21 ) ) $
+           ( rankPronunciation ("spellingY", [Y]) ( Map.fromList [("spellingY",21)] ) )
                                            ]
 
 makePronunciation :: String -> [Phoneme] -> (String, [Phoneme])
