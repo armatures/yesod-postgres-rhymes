@@ -59,7 +59,7 @@ testRankingParser = TestLabel "RankingFile tests" $ TestList [
     ]
 
 testSeed :: Test
-testSeed = TestLabel "Seed tests" $ TestList [
+testSeed = TestLabel "ranking lookup tests" $ TestList [
       TestCase $
         assertEqual "empty map gives ranking of Nothing"
           ( Pronunciation ( T.pack "y" ) [Y] Nothing ) $
@@ -69,10 +69,18 @@ testSeed = TestLabel "Seed tests" $ TestList [
          ( Pronunciation ( T.pack "xY" ) [Y] ( Just 21 ) ) $
            ( rankPronunciation ("xY", [Y]) ( Map.fromList [("xY",21)] ) )
       , TestCase $
+        assertEqual "rank ignores leading apostrophe"
+         ( Pronunciation ( T.pack "'Y" ) [Y] ( Just 21 ) ) $
+           ( rankPronunciation ("'Y", [Y]) ( Map.fromList [("Y",21)] ) )
+      , TestCase $
         assertEqual "rank lookup ignores spelling's (2) suffix"
          ( Pronunciation ( T.pack "y(2)" ) [Y] ( Just 21 ) ) $
            ( rankPronunciation ("y(2)", [Y]) ( Map.fromList [("y",21)] ) )
-                                           ]
+      , TestCase $
+        assertEqual "rank lookup ignores spelling's 's suffix"
+         ( Pronunciation ( T.pack "robot's(2)" ) [R] ( Just 21 ) ) $
+           ( rankPronunciation ("robot's(2)", [R]) ( Map.fromList [("robot",21)] ) )
+         ]
 
 makePronunciation :: String -> [Phoneme] -> (String, [Phoneme])
 makePronunciation spelling phonemes =

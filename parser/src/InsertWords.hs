@@ -9,7 +9,7 @@ import Parsers.WordFile (UnrankedPronunciation)
 import System.Environment
 import Data.Text as T hiding (length)
 import Data.Map as Map
-import Text.Parsec (try, (<|>), char, digit, many1, runParser, noneOf)
+import Text.Parsec (try, (<|>), char, digit, many1, runParser, noneOf, string)
 
 insertWords :: [ UnrankedPronunciation ] -> Map String Int -> IO ()
 insertWords dict rankMap = do
@@ -37,13 +37,12 @@ cleanSpelling uncleanSpelling =
       Right spelling -> spelling
 
 spellingCleaner = do
-    try secondary <|> primary
-      where
-        primary = many1 $ noneOf " ("
-        secondary = do
-          spelling <- primary
-          void $ char '('
-          void $ digit
-          void $ char ')'
+          optional $ char '\''
+          spelling <- many1 $ noneOf " ('"
+          optional $ string "'s"
+          optional parenthesizedDigit
           return spelling
-
+ where parenthesizedDigit = do
+          char '('
+          digit
+          char ')'
