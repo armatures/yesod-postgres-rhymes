@@ -33,6 +33,10 @@ testWordFileParser = TestLabel "WordFile tests" $ TestList [
         ( Right $ makePronunciation "yow" [Y, OW Emp1] ) $
           parseWithEof wordLine "yow Y OW1 #"
       , TestCase $
+        assertEqual "spelling with parenthesizedDigit"
+        ( Right $ makePronunciation "a(2)" [EY Emp1] ) $
+          parseWithEof wordLine "a(2) EY1"
+      , TestCase $
         assertEqual "dash in spelling, comment"
         ( Right $ makePronunciation "yew-chow" [Y, UW Emp2, CH, OW Emp1] ) $
           parseWithEof wordLine "yew-chow Y UW2 CH OW1 # dash in spellin"

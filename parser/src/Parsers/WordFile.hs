@@ -38,7 +38,7 @@ wordParser = do
     return (spelling, pronounciation)
 
 spellingParser =
-    many1 $ noneOf "ABCDEFGHIJKLMNOPQRSTUVWXYZ ("
+    many1 $ noneOf " \t"
 
 pronounciationParser :: Parser [Phoneme]
 pronounciationParser =

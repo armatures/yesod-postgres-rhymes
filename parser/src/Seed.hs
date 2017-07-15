@@ -30,7 +30,7 @@ dictionaryPath = "/Users/charliebevis/workspace/cmudict/cmudict.dict"
 rankingPath = "/Users/charliebevis/workspace/cmudict/word_frequency.txt"
 
 printParseFailure :: String -> ParseError -> IO ()
-printParseFailure dictionaryPath _ =
+printParseFailure dictionaryPath e =
          putStrLn $ T.pack $
-           "failed to parse the dictionary at " ++ dictionaryPath
+           show e
 
